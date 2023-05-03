@@ -27,7 +27,7 @@ app.use('/', mainRoutes);
 
 // 404 NOT FOUND
 app.use((req, res, next) => {
-    res.status(404).render("not-found");
+    res.status(404).send("Not found");
 })
 
 

@@ -1,12 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PDF Image-Split</title>
-</head>
-<body>
-    <h1>PDF Image-Split</h1>
-</body>
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>PDF Data-Save</title>
+        <link rel="stylesheet" href="/css/styles.css">
+    </head>
+    <body>
+        <div class="main-container">
+            <div class="pdf-wrapper">
+                <h1>Current PDF: <%= (pdfName) ? pdfName : 'Name not found' %></h1>
+                <iframe src="/inputPdfs/<%= (pdfName) ? pdfName : 'not-found.jpg' %>" frameborder="0" type="application/pdf"></iframe>
+            </div>
+            <div class="response-container">
+                <form id="form" action="" method="POST" enctype="multipart/form-data">
+                    <button type="submit" class="submit-btn">Save Data</button>
+                </form>
+                <div class="response">
+                    
+                </div>
+            </div>
+        </div>
+
+    </body>
 </html>

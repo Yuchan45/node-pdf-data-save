@@ -3,10 +3,9 @@ const path = require('path');
 
 const mainController = {
     index: async function(req, res) {
-        return res.status(200).render('home', {
-            // products: products,
-        });
-        
+        pdfName = 'g-28_unlocked.pdf';
+        return res.status(200).render('home', { pdfName });    
+
     }
 }
 
