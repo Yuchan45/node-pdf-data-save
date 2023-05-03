@@ -1,15 +1,19 @@
 {
-  "name": "pdf-image-split",
+  "name": "pdf-data-save",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node src/app.js",
+    "dev": "nodemon src/app.js"
   },
-  "author": "",
+  "author": "Yuchan",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.18.2"
+    "ejs": "^3.1.9",
+    "express": "^4.18.2",
+    "method-override": "^3.0.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.22"
