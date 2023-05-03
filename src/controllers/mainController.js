@@ -22,8 +22,10 @@ const mainController = {
             EstoyAca: "asdas"
         }
         
-        const files = req.files;
-        console.log(files);
+        // const files = req.files;
+        // console.log(files);
+        var pdfFile = req.body.pdfFile;
+        console.log(pdfFile);
 
 
         return res.status(200).render('home', { pdfName, data });    
