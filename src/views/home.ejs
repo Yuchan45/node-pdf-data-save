@@ -11,17 +11,19 @@
         <div class="main-container">
             <div class="pdf-wrapper">
                 <h1>Current PDF: <%= (pdfName) ? pdfName : 'Name not found' %></h1>
-                <iframe src="/inputPdfs/<%= (pdfName) ? pdfName : 'not-found.jpg' %>" frameborder="0" type="application/pdf"></iframe>
+                <iframe id="pdfIframe" src="/inputPdfs/<%= (pdfName) ? pdfName : 'not-found.jpg' %>" frameborder="0" type="application/pdf"></iframe>
             </div>
             <div class="response-container">
-                <form id="form" action="/processData" method="POST" enctype="multipart/form-data">
-                    <button type="submit" class="submit-btn">Save Data</button>
-                </form>
+                <!-- <form id="form" action="/processData" method="POST" enctype="multipart/form-data">
+                    <input type="file" name="pdfFile">
+                </form> -->
+                <button id="button_id" type="submit" class="submit-btn">Save Data</button>
                 <div class="response">
                     <p><%= (data) ? JSON.stringify(data, null, 4) : 'data not-found' %></p>
                 </div>
             </div>
         </div>
-
+        
     </body>
+    <script src="/js/scripts.js"></script>
 </html>
