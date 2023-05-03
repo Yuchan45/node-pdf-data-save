@@ -2,9 +2,11 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .main-container {
+    /* background-color: #2a2a2a; */
     padding: 50px;
     width: 100vw;
     height: 100vh;
@@ -30,6 +32,10 @@
     height: 100%;
 }
 
+.pdf-wrapper > h1 {
+    /* color: white; */
+}
+
 .response-container {
     width: 100vw;
     background-color: whitesmoke;
@@ -48,6 +54,11 @@
     padding: 5px;
     margin: 10px;
     background-color: #2a2a2a;
+}
+
+.response-container .response > p {
+    color: white;
+    font-size: 15px;
 }
 
 .submit-btn {

@@ -14,11 +14,11 @@
                 <iframe src="/inputPdfs/<%= (pdfName) ? pdfName : 'not-found.jpg' %>" frameborder="0" type="application/pdf"></iframe>
             </div>
             <div class="response-container">
-                <form id="form" action="" method="POST" enctype="multipart/form-data">
+                <form id="form" action="/processData" method="POST" enctype="multipart/form-data">
                     <button type="submit" class="submit-btn">Save Data</button>
                 </form>
                 <div class="response">
-                    
+                    <p><%= (data) ? JSON.stringify(data, null, 4) : 'data not-found' %></p>
                 </div>
             </div>
         </div>
