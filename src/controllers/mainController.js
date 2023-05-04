@@ -16,16 +16,15 @@ const mainController = {
         return res.status(200).render('home', { pdfName, data });    
     },
     processData: async function(req, res) {
-        // console.log("Entro aca");
         pdfName = 'g-28_unlocked.pdf';
         const data = {
             EstoyAca: "asdas"
         }
-        
         // const files = req.files;
         // console.log(files);
-        var pdfFile = req.body.pdfFile;
-        console.log(pdfFile);
+
+        const pdfFile = '/public/';
+        
 
 
         return res.status(200).render('home', { pdfName, data });    

@@ -4,6 +4,7 @@
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="https://documentservices.adobe.com/view-sdk/viewer.js"></script>
         <title>PDF Data-Save</title>
         <link rel="stylesheet" href="/css/styles.css">
     </head>
@@ -11,20 +12,39 @@
         <div class="main-container">
             <div class="pdf-wrapper">
                 <h1>Current PDF: <%= (pdfName) ? pdfName : 'Name not found' %></h1>
-                <iframe id="pdfIframe" src="/inputPdfs/<%= (pdfName) ? pdfName : 'not-found.jpg' %>" frameborder="0" type="application/pdf"></iframe>
+                <!-- <iframe id="pdfIframe" src="/inputPdfs/<%= (pdfName) ? pdfName : 'not-found.jpg' %>" frameborder="0" type="application/pdf"></iframe> -->
+                <div id="adobe-dc-view"></div>
             </div>
             <div class="response-container">
-                <form id="form" action="/processData" method="POST" enctype="multipart/form-data">
+                <!-- <form id="form" action="/processData" method="POST" enctype="multipart/form-data">
                     <input type="file" name="pdfFile">
                     <button type="submit" class="submit-btn">Save Data del input</button>
-                </form>
+                </form> -->
+
                 <button id="button_id" type="submit" class="submit-btn">Save Data</button>
+
                 <div class="response">
                     <p><%= (data) ? JSON.stringify(data, null, 4) : 'data not-found' %></p>
                 </div>
             </div>
         </div>
         
+        
+        <script type="text/javascript">
+            document.addEventListener("adobe_dc_view_sdk.ready", function()
+            {
+                var adobeDCView = new AdobeDC.View({clientId: "45fc1d368d724aadb79e26afe3fcbd32", divId: "adobe-dc-view"});
+                adobeDCView.previewFile(
+                {
+                    content: {location: {url: "/inputPdfs/g-28_unlocked.pdf"}},
+                    metaData: {fileName: "g-28_unlocked.pdf"}
+                },
+                {
+                    embedMode: "SIZED_CONTAINER"
+                });
+            });
+        </script>
+        <!-- <script src="/js/scripts.js"></script> -->
     </body>
-    <script src="/js/scripts.js"></script>
 </html>
+
