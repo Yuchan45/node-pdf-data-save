@@ -39,7 +39,7 @@
 .response-container {
     width: 100vw;
     background-color: whitesmoke;
-    max-width: 500px;
+    max-width: 600px;
     height: 100%;
     max-height: 1000px;
     padding: 10px;
@@ -62,11 +62,17 @@
 }
 
 .submit-btn {
-    width: 100px;
+    width: 120px;
     height: 35px;
     padding: 5px 10px;
     border-radius: 5px;
     background-color: #67bdfb;
     font-weight: 700;
-    font-size: 1rem;
+    color: white;
+    font-size: .8rem;
+    transition: all .3s ease;
+}
+
+.submit-btn:hover {
+    background-color: #0068b3;
 }

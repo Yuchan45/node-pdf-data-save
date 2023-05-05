@@ -1,4 +1,6 @@
 const { PDFDocument } = PDFLib;
+// Load the PDF.js library
+const pdfjsLib = window['pdfjs-dist/build/pdf'];
 
 let pdfDoc;
 
@@ -32,15 +34,15 @@ const submitBtn = document.getElementById("submitBtn");
 submitBtn.addEventListener("click", async function() {
     console.log("Save Click");
     const iframe = document.getElementById('pdf');
-    // const iframeContent = iframe.contentDocument || iframe.contentWindow.document;
-    //const pdfData = await iframeContent.body.innerHTML;
+
     const iframeContent = iframe.contentDocument || iframe.contentWindow.document;
     const pdfData = iframeContent.body.innerHTML;
-
-    //const iframeDoc = iframe.contentDocument;
-    //const pdfData = await iframeDoc.body.innerHTML;
-
-
+    
+    // const iframeDoc = iframe.contentDocument;
+    // const pdfData = await iframeDoc.body.innerHTML;
+    
+    
+    console.log(pdfData)
 
     const pdfDocWithChanges = await PDFDocument.load(pdfData, { ignoreEncryption: true });
     const form = pdfDocWithChanges.getForm();
@@ -57,5 +59,20 @@ submitBtn.addEventListener("click", async function() {
     // }
     // this.fields = fields;
     //this.sendFields(fields);
+
+
+
+    // // Get the <embed> element by ID
+    // const embed = document.getElementById('pdf');
+
+    // // Get the URL of the PDF file from the src attribute of the <embed> element
+    // const url = embed.getAttribute('src');
+
+    // // Load the PDF document using PDF.js
+    // const loadingTask = pdfjsLib.getDocument(url);
+    // loadingTask.promise.then((pdfDoc) => {
+    // // Do something with the PDF document
+    //     console.log(pdfDoc)
+    // });
 
 });
