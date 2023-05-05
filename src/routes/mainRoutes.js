@@ -8,7 +8,7 @@ const multipleUpload = require('../middlewares/pdfsMulter');
 const { index, processData } = mainController;
 
 router.get('/', index);
-router.post('/processData', multipleUpload, processData);
+router.post('/processData', processData);
 
 
 module.exports = router;

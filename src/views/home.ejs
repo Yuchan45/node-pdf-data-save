@@ -4,7 +4,9 @@
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <script src="https://documentservices.adobe.com/view-sdk/viewer.js"></script>
+        <!-- <script src="https://documentservices.adobe.com/view-sdk/viewer.js"></script> -->
+        <script src="https://unpkg.com/pdf-lib@1.4.0"></script>
+		<script src="https://unpkg.com/downloadjs@1.4.7"></script>
         <title>PDF Data-Save</title>
         <link rel="stylesheet" href="/css/styles.css">
     </head>
@@ -12,16 +14,13 @@
         <div class="main-container">
             <div class="pdf-wrapper">
                 <h1>Current PDF: <%= (pdfName) ? pdfName : 'Name not found' %></h1>
-                <!-- <iframe id="pdfIframe" src="/inputPdfs/<%= (pdfName) ? pdfName : 'not-found.jpg' %>" frameborder="0" type="application/pdf"></iframe> -->
-                <div id="adobe-dc-view"></div>
+                <!-- <iframe id="pdfIframe" src="/outputPdfs/<%= (pdfName) ? pdfName : 'not-found.jpg' %>" frameborder="0" type="application/pdf"></iframe> -->
+                <!-- <div id="adobe-dc-view"></div> -->
+                <iframe id="pdf" style="width: 90%; height: 90%;"></iframe>
             </div>
             <div class="response-container">
-                <!-- <form id="form" action="/processData" method="POST" enctype="multipart/form-data">
-                    <input type="file" name="pdfFile">
-                    <button type="submit" class="submit-btn">Save Data del input</button>
-                </form> -->
 
-                <button id="button_id" type="submit" class="submit-btn">Save Data</button>
+                <button id="submitBtn" type="submit" class="submit-btn">Save Data</button>
 
                 <div class="response">
                     <p><%= (data) ? JSON.stringify(data, null, 4) : 'data not-found' %></p>
@@ -30,21 +29,46 @@
         </div>
         
         
-        <script type="text/javascript">
-            document.addEventListener("adobe_dc_view_sdk.ready", function()
-            {
+        <!-- <script>
+            document.addEventListener("adobe_dc_view_sdk.ready", function() {
                 var adobeDCView = new AdobeDC.View({clientId: "45fc1d368d724aadb79e26afe3fcbd32", divId: "adobe-dc-view"});
-                adobeDCView.previewFile(
-                {
-                    content: {location: {url: "/inputPdfs/g-28_unlocked.pdf"}},
-                    metaData: {fileName: "g-28_unlocked.pdf"}
+                adobeDCView.previewFile({
+                    content: {location: {url: "/outputPdfs/pdfPocosDatosTexts.pdf"}},
+                    metaData: {
+                        fileName: "g-28_unlocked.pdf",
+                        hasReadOnlyAccess: false
+                    }
                 },
                 {
-                    embedMode: "SIZED_CONTAINER"
+                    embedMode: "SIZED_CONTAINER",
+                    showAnnotationTools: false,
+                    showDownloadPDF: true,
+                    showPrintPDF: true,
+                    enableFormFilling: true,
                 });
-            });
-        </script>
-        <!-- <script src="/js/scripts.js"></script> -->
+
+                // adobeDCView.registerCallback(
+                //     AdobeDC.View.Enum.CallbackType.FORM_DATA_READY,
+                //     function(formData) {
+                //     var data = {};
+
+                //     for (var i = 0; i < formData.length; i++) {
+                //         var fieldData = formData[i];
+                //         data[fieldData.fieldName] = fieldData.fieldValue;
+                //     }
+
+                //     // Enviar los datos a un endpoint de Node.js
+                //     console.log(data);
+                //     // fetch('TU_ENDPOINT', {
+                //     //     method: 'POST',
+                //     //     headers: { 'Content-Type': 'application/json' },
+                //     //     body: JSON.stringify(data),
+                //     // });
+                //     },
+                // );
+            }); 
+        </script> -->
+        <script type="module" src="/js/scripts.js"></script>
     </body>
 </html>
 

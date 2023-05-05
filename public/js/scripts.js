@@ -1,46 +1,61 @@
-function sendPdf() {
-    console.log("ENTERED sendPdf");
-    // Get a reference to the iframe element
-    const iframe = document.getElementById('pdfIframe');
+const { PDFDocument } = PDFLib;
 
-    // Get a reference to the PDF document inside the iframe
-    const pdfDoc = iframe.contentDocument || iframe.contentWindow.document;
+let pdfDoc;
 
-    // Create a new FileReader object
-    const reader = new FileReader();
+async function loadPdf() {
+	// Fetch an existing PDF document.
+	const url = '/outputPdfs/pdfPocosDatosTexts.pdf';
+	const existingPdfBytes = await fetch(url).then((res) => res.arrayBuffer());
 
-    // Read the PDF data from the iframe
-    reader.readAsArrayBuffer(pdfDoc.fileData);
+	// Load a `PDFDocument` from the existing PDF bytes.
+	return PDFDocument.load(existingPdfBytes);
+}
 
-    // When the reader is done reading the data, send it to the server
-    reader.addEventListener('loadend', function() {
-        fetch('/processData', {
-            method: 'POST',
-            body: reader.result
-        })
-        .then(response => {
-            // Handle the response from the server
-            console.log('Server response:', response);
-        })
-        .catch(error => {
-            // Handle any errors that occurred during the fetch request
-            console.error('Fetch error:', error);
-        });
-    });
-};
+async function saveAndRender(doc) {
+	// Serialize the `PDFDocument` to bytes (a `Uint8Array`).
+	const pdfBytes = await doc.save();
 
-// Add a load event listener to the window
-window.addEventListener('load', function() {
-    // Wait for the iframe to finish loading the PDF
-    const iframe = document.getElementById('pdfIframe');
-    iframe.addEventListener('load', function() {
-        console.log("PDF loaded");
-    });
+	const pdfDataUri = await doc.saveAsBase64({ dataUri: true });
+	document.getElementById('pdf').src = pdfDataUri;
+}
 
-    // Add a click event listener to the button
-    document.getElementById("button_id").addEventListener("click", function() {
-        // Trigger the form submission by clicking the hidden file input element
-        console.log("Button clicked");
-        sendPdf();
-    });
+
+
+loadPdf().then((doc) => {
+    pdfDoc = doc;
+    return saveAndRender(pdfDoc);
+})
+
+const submitBtn = document.getElementById("submitBtn");
+
+
+submitBtn.addEventListener("click", async function() {
+    console.log("Save Click");
+    const iframe = document.getElementById('pdf');
+    // const iframeContent = iframe.contentDocument || iframe.contentWindow.document;
+    //const pdfData = await iframeContent.body.innerHTML;
+    const iframeContent = iframe.contentDocument || iframe.contentWindow.document;
+    const pdfData = iframeContent.body.innerHTML;
+
+    //const iframeDoc = iframe.contentDocument;
+    //const pdfData = await iframeDoc.body.innerHTML;
+
+
+
+    const pdfDocWithChanges = await PDFDocument.load(pdfData, { ignoreEncryption: true });
+    const form = pdfDocWithChanges.getForm();
+    const values = form.getValues();
+
+    console.log(values);
+
+    // const fields = {};      
+    // const formFields = this.pdfDoc.getForm().getFields();
+    // console.log(formFields)
+    // for (const field of formFields) {
+    //     //console.log(field)
+    //     fields[field.getName()] = field.getValue();
+    // }
+    // this.fields = fields;
+    //this.sendFields(fields);
+
 });
