@@ -1,4 +1,5 @@
 const express = require('express');
+const bodyParser = require('body-parser');
 const path = require('path');
 const methodOverride = require('method-override');
 
@@ -18,6 +19,8 @@ app.set('port', process.env.PORT || 3001);
 app.set('views', path.resolve(__dirname, './views'));
 app.use(express.urlencoded({extended: false}));
 app.use(express.json());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // SET TEMPLATE ENGINE (EJS)
 app.set('view engine', 'ejs');

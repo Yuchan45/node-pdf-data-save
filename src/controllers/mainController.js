@@ -17,8 +17,18 @@ const mainController = {
 
         return res.status(200).render('home', { pdfName, data });    
     },
+
     processData: async function(req, res) {
-        console.log("Entre")
+        console.log("Entre");
+        pdfName = 'g-28_unlocked.pdf';
+        const data = req.body;
+        console.log("data:" + data);
+
+        return res.status(200).render('home', { pdfName, data });    
+    },
+
+
+    processData2: async (req, res) => {
         pdfName = 'g-28_unlocked.pdf';
         const data = [];
         // const files = req.files;
