@@ -5,31 +5,26 @@ const responseTxt = document.getElementById("response-text");
 
 async function getPDFKeyValues(arrayBuffer) {
     // Cargar el PDF usando PDF.js
-    pdfjsLib.getDocument({data: arrayBuffer}).promise.then(function(pdf) {
-        let pdfValues = [];
-        const numPaginas = pdf.numPages;
-        // Cargar cada página y extraer los campos de formulario
+    const pdf = await pdfjsLib.getDocument({data: arrayBuffer}).promise;
+    const pdfValues = [];
 
-        for (let i = 1; i <= numPaginas; i++) {
-            pdf.getPage(i).then(function(pagina) {
-                pagina.getAnnotations().then(function(annotations) {
-                    for (let j = 0; j < annotations.length; j++) {
-                        let annotation = annotations[j];
-                        if (annotation.fieldType && annotation.fieldType === 'Tx') {
-                            let fieldName = annotation.fieldName;
-                            let fieldValue = annotation.fieldValue;
-                            // console.log(fieldName + ': ' + fieldValue);
-                            pdfValues.push({fieldName: fieldName, fieldValue: fieldValue});
-                        }
-                    }
-                });
-            });
-        }
-        // console.log("PDF Fields Content: ");
-        console.log("padfValues: ", pdfValues);
-        return pdfValues;
-    });
+    const numPaginas = pdf.numPages;
+    // Cargar cada página y extraer los campos de formulario
 
+    await Promise.all(Array.from({length: numPaginas}, (_, i) => i + 1).map(async (i) => {
+        const pagina = await pdf.getPage(i);
+        const annotations = await pagina.getAnnotations();
+        annotations.forEach(function(annotation) {
+            if (annotation.fieldType && annotation.fieldType === 'Tx') {
+                const fieldName = annotation.fieldName;
+                const fieldValue = annotation.fieldValue;
+                pdfValues.push({fieldName: fieldName, fieldValue: fieldValue});
+            }
+        });
+    }));
+
+    console.log("padfValues: ", pdfValues);
+    return pdfValues;
 };
 
 
