@@ -21,7 +21,7 @@
                 <button id="submitBtn" type="submit" class="submit-btn">Save Data</button>
 
                 <div class="response">
-                    <pre id="response-text" ><%= (data) ? JSON.stringify(data, null, 4) : 'data not-found' %></pre>
+                    <pre id="response-text" ><%= data ? data : 'Data from the sv not found!' %></pre>
                 </div>
             </div>
         </div>

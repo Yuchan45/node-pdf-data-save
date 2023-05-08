@@ -1,9 +1,14 @@
 const pdfjsLib = window['pdfjs-dist/build/pdf'];
 const responseTxt = document.getElementById("response-text");
-responseTxt.innerHTML = "Hello, world!\nSave changes and see the PDF's key-values here!";
+
 
 
 async function getPDFKeyValues(arrayBuffer) {
+    /**
+     * Recibe un arrayBuffer con el contenido del PDF.
+     * Retorna un array de objetos con key: 'fieldName' y valor: 'fieldValue'.
+     */
+
     // Cargar el PDF usando PDF.js
     const pdfValues = [];
     const pdf = await pdfjsLib.getDocument({data: arrayBuffer}).promise;
@@ -26,13 +31,43 @@ async function getPDFKeyValues(arrayBuffer) {
 
 
 async function postData(url, results, fetchOptions) {
+    /**
+     * Recibe la url a la que postear, los results (data a enviar al sv) y las opciones.
+     * Hace envio de los results al servidor. Retorna lo que devuelve el servidor, o el error en su defecto.
+     */
+
+    let response;
     try {
-      const response = await axios.post(url, results, fetchOptions);
-      console.log(response.data);
+      response = await axios.post(url, results, fetchOptions);
     } catch (error) {
-      console.error('Error:', error);
+        response.error = 'Error:' + error;
+      //console.error('Error:', error);
     }
-  }
+    return response.data ? response.data : response.error;
+};
+
+
+async function showPDFKeyValues(pdfArrayBuffer) {
+    /**
+     * Recibe un arrayBuffer con el contenido del PDF.
+     * Se encarga de procesar los datos del PDF actualizado y mostrar los resultados obtenidos en la pantalla en formato de json.
+     */
+
+    const results = await getPDFKeyValues(pdfArrayBuffer);   
+
+    // POST al SV.
+    const url = '/processData';
+    const fetchOptions = {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    };
+    const processedResults = await postData(url, results, fetchOptions);
+
+    // Print
+    responseTxt.innerHTML = JSON.stringify(processedResults, null, 2);
+};
+
 
 
 document.addEventListener("adobe_dc_view_sdk.ready", function() {
@@ -40,6 +75,7 @@ document.addEventListener("adobe_dc_view_sdk.ready", function() {
 
     // const miApiKey = 45fc1d368d724aadb79e26afe3fcbd32;
     // const ApiKeyMati = 5da6731fa7134ae481916d27d363d44;
+
     var adobeDCView = new AdobeDC.View({clientId: "45fc1d368d724aadb79e26afe3fcbd32", divId: "adobe-dc-view"});
     // Preview PDF.
     adobeDCView.previewFile({
@@ -73,20 +109,11 @@ document.addEventListener("adobe_dc_view_sdk.ready", function() {
             /* Add your custom save implementation here...and based on that resolve or reject response in given format */
             const pdfArrayBuffer = content;
             // fs.writeFile('rotateTest.pdf', arrayBuffer);
+            
+            showPDFKeyValues(pdfArrayBuffer);
 
-            const results = await getPDFKeyValues(pdfArrayBuffer);
-            console.log("results: ", results);
-            responseTxt.innerHTML = JSON.stringify(results, null, 2);
 
-            // POST al SV.
-            const url = '/processData';
-            const fetchOptions = {
-                headers: {
-                  'Content-Type': 'application/json'
-                }
-            };
 
-            postData(url, results, fetchOptions);
 
 
             // Adobe API success return.

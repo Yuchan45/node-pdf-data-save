@@ -7,13 +7,7 @@ const mainController = {
     index: async function(req, res) {
         const pdfName = 'pdfPocosDatosTexts.pdf';
         // const pdfName = 'i360ConBotonSend.pdf';
-        const data = {
-            Example_pdf: {
-                "form1[0].#pageSet[0].Page1[0].PDF417BarCode1[0]": "Tomas",
-                "form1[0].#pageSet[0].Page1[0].PDF417BarCode1[1]": "Yu",
-                "form1[0].#pageSet[0].Page1[0].PDF417BarCode1[2]": "Nakasone",
-            }
-        };
+        const data = "Hello, world!\nSave changes and see the PDF's key-values here!";
 
         return res.status(200).render('home', { pdfName, data });    
     },
@@ -22,15 +16,17 @@ const mainController = {
         console.log("Entre");
         pdfName = 'g-28_unlocked.pdf';
         const fields = req.body;
-        // console.log("fields:" + data[0].fieldValue);
+
+        let pdfKeyValues = [];
 
         fields.forEach(field => {
             fieldName = field.fieldName;
             fieldValue = field.fieldValue ? field.fieldValue : 'Empty';
-            console.log(fieldName + ": " + fieldValue);
+
+            pdfKeyValues.push({fieldName: fieldName, fieldValue: fieldValue});
         });
 
-        return res.status(200).send("Holis");
+        return res.status(200).send(pdfKeyValues);
         // return res.status(200).render('home', { pdfName, data });    
     },
 
