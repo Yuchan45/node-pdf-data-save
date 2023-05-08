@@ -51,7 +51,7 @@
 
 .response-container .response {
     height: 100%;
-    padding: 5px;
+    padding: 25px;
     margin: 50px 10px 10px 10px;
     background-color: #2a2a2a;
     border-radius: 5px;
@@ -60,9 +60,10 @@
     -moz-box-shadow: 5px 5px 5px 4px rgba(0,0,0,0.14);
 }
 
-.response-container .response > p {
-    color: white;
-    font-size: 15px;
+.response-container .response > pre {
+    color: #6ed771;
+    font-size: 1rem;
+    font-weight: 400;
 }
 
 .submit-btn {

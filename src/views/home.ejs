@@ -7,8 +7,6 @@
         <script src="https://documentservices.adobe.com/view-sdk/viewer.js"></script> <!-- Adobe API -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script> <!-- PDF.js -->
         <script src="https://unpkg.com/axios/dist/axios.min.js"></script> <!-- Axios -->
-        <script src="https://unpkg.com/pdf-lib@1.4.0"></script>
-		<script src="https://unpkg.com/downloadjs@1.4.7"></script>
         <title>PDF Data-Save</title>
         <link rel="stylesheet" href="/css/styles.css">
     </head>
@@ -16,17 +14,14 @@
         <div class="main-container">
             <div class="pdf-wrapper">
                 <h1>Current PDF: <%= (pdfName) ? pdfName : 'Name not found' %></h1>
-                <!-- <iframe id="pdfIframe" src="/outputPdfs/<%= (pdfName) ? pdfName : 'not-found.jpg' %>" frameborder="0" type="application/pdf"></iframe> -->
                 <div id="adobe-dc-view"></div>
-                <!-- <iframe id="pdf" style="width: 90%; height: 90%;"></iframe> -->
-                <!-- <embed id="pdf" width="500" height="700" type="application/pdf"> -->
             </div>
             <div class="response-container">
 
                 <button id="submitBtn" type="submit" class="submit-btn">Save Data</button>
 
                 <div class="response">
-                    <p id="response-text" ><%= (data) ? JSON.stringify(data, null, 4) : 'data not-found' %></p>
+                    <pre id="response-text" ><%= (data) ? JSON.stringify(data, null, 4) : 'data not-found' %></pre>
                 </div>
             </div>
         </div>

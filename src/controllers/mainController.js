@@ -21,10 +21,17 @@ const mainController = {
     processData: async function(req, res) {
         console.log("Entre");
         pdfName = 'g-28_unlocked.pdf';
-        const data = req.body;
-        console.log("data:" + data);
+        const fields = req.body;
+        // console.log("fields:" + data[0].fieldValue);
 
-        return res.status(200).render('home', { pdfName, data });    
+        fields.forEach(field => {
+            fieldName = field.fieldName;
+            fieldValue = field.fieldValue ? field.fieldValue : 'Empty';
+            console.log(fieldName + ": " + fieldValue);
+        });
+
+        return res.status(200).send("Holis");
+        // return res.status(200).render('home', { pdfName, data });    
     },
 
 

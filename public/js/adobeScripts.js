@@ -1,16 +1,15 @@
 const pdfjsLib = window['pdfjs-dist/build/pdf'];
-
 const responseTxt = document.getElementById("response-text");
+responseTxt.innerHTML = "Hello, world!\nSave changes and see the PDF's key-values here!";
 
 
 async function getPDFKeyValues(arrayBuffer) {
     // Cargar el PDF usando PDF.js
-    const pdf = await pdfjsLib.getDocument({data: arrayBuffer}).promise;
     const pdfValues = [];
-
+    const pdf = await pdfjsLib.getDocument({data: arrayBuffer}).promise;
     const numPaginas = pdf.numPages;
-    // Cargar cada página y extraer los campos de formulario
 
+    // Cargar cada página y extraer los campos de formulario
     await Promise.all(Array.from({length: numPaginas}, (_, i) => i + 1).map(async (i) => {
         const pagina = await pdf.getPage(i);
         const annotations = await pagina.getAnnotations();
@@ -22,10 +21,18 @@ async function getPDFKeyValues(arrayBuffer) {
             }
         });
     }));
-
-    console.log("padfValues: ", pdfValues);
     return pdfValues;
 };
+
+
+async function postData(url, results, fetchOptions) {
+    try {
+      const response = await axios.post(url, results, fetchOptions);
+      console.log(response.data);
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
 
 
 document.addEventListener("adobe_dc_view_sdk.ready", function() {
@@ -34,6 +41,7 @@ document.addEventListener("adobe_dc_view_sdk.ready", function() {
     // const miApiKey = 45fc1d368d724aadb79e26afe3fcbd32;
     // const ApiKeyMati = 5da6731fa7134ae481916d27d363d44;
     var adobeDCView = new AdobeDC.View({clientId: "45fc1d368d724aadb79e26afe3fcbd32", divId: "adobe-dc-view"});
+    // Preview PDF.
     adobeDCView.previewFile({
         content: {location: {url: "/outputPdfs/" + pdfName}},
         metaData: {
@@ -57,11 +65,10 @@ document.addEventListener("adobe_dc_view_sdk.ready", function() {
         showSaveButton: true
     };
      
-     /* Register save callback */
+    // Register save callback
     adobeDCView.registerCallback(
         // Este metodo se ejecuta cuando se guarda el pdf.
         AdobeDC.View.Enum.CallbackType.SAVE_API,
-
         async function(metaData, content, options) {
             /* Add your custom save implementation here...and based on that resolve or reject response in given format */
             const pdfArrayBuffer = content;
@@ -69,32 +76,20 @@ document.addEventListener("adobe_dc_view_sdk.ready", function() {
 
             const results = await getPDFKeyValues(pdfArrayBuffer);
             console.log("results: ", results);
-            
-            // const data2 = [
-            //     { name: 'John', age: 30 },
-            //     { name: 'Jane', age: 25 },
-            //     { name: 'Bob', age: 40 }
-            //   ];
-            // console.log(data2)
-            // Send to sv.
-            // const url = '/processData';
+            responseTxt.innerHTML = JSON.stringify(results, null, 2);
 
-            // const options = {
-            //     headers: {
-            //       'Content-Type': 'application/json'
-            //     }
-            // };
+            // POST al SV.
+            const url = '/processData';
+            const fetchOptions = {
+                headers: {
+                  'Content-Type': 'application/json'
+                }
+            };
 
-            // // Enviar la petición axios
-            // axios.post(url, data2, options)
-            //     .then(response => {
-            //         console.log(response.data2);
-            //     })
-            //     .catch(error => {
-            //         console.error('Error:', error);
-            //     });
+            postData(url, results, fetchOptions);
 
 
+            // Adobe API success return.
             return new Promise((resolve, reject) => {
                 resolve({
                     code: AdobeDC.View.Enum.ApiResponseCode.SUCCESS,
