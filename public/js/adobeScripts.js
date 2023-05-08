@@ -71,7 +71,8 @@ async function showPDFKeyValues(pdfArrayBuffer) {
 
 
 document.addEventListener("adobe_dc_view_sdk.ready", function() {
-    const pdfName = 'pdfPocosDatosTexts.pdf';
+    //const pdfName = 'pdfPocosDatosTexts.pdf';
+    const pdfName = 'unaSolaHojaTodoTexts.pdf';
 
     // const miApiKey = 45fc1d368d724aadb79e26afe3fcbd32;
     // const ApiKeyMati = 5da6731fa7134ae481916d27d363d44;
@@ -111,9 +112,6 @@ document.addEventListener("adobe_dc_view_sdk.ready", function() {
             // fs.writeFile('rotateTest.pdf', arrayBuffer);
             
             showPDFKeyValues(pdfArrayBuffer);
-
-
-
 
 
             // Adobe API success return.

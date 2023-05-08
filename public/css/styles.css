@@ -58,6 +58,7 @@
     box-shadow: 5px 5px 5px 4px rgba(0,0,0,0.14);
     -webkit-box-shadow: 5px 5px 5px 4px rgba(0,0,0,0.14);
     -moz-box-shadow: 5px 5px 5px 4px rgba(0,0,0,0.14);
+    overflow: auto;
 }
 
 .response-container .response > pre {
