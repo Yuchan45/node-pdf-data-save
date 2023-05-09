@@ -107,6 +107,17 @@ document.addEventListener("adobe_dc_view_sdk.ready", function() {
         }
     },
     {
+        embedMode: "FULL_WINDOW",
+        showAnnotationTools: false,
+        showDownloadPDF: true,
+        showPrintPDF: true,
+        enableFormFilling: true,
+        showAnnotationTools: true,
+        showToolbar: true,
+    });
+
+    /**
+     * 
         showDownloadPDF: true,
         showPrintPDF: true,
         showPageControls: true,
@@ -116,17 +127,6 @@ document.addEventListener("adobe_dc_view_sdk.ready", function() {
         dockPageControls: true,
         dockNavigationControls: true,
         dockBookmarkButton: true,
-    });
-
-    /**
-     * 
-        embedMode: "FULL_WINDOW",
-        showAnnotationTools: false,
-        showDownloadPDF: true,
-        showPrintPDF: true,
-        enableFormFilling: true,
-        showAnnotationTools: true,
-        showToolbar: true,
      */
 
     /* Options to control save behavior */
