@@ -119,19 +119,6 @@ document.addEventListener("adobe_dc_view_sdk.ready", function() {
         showToolbar: true,
     });
 
-    /**
-     * 
-        showDownloadPDF: true,
-        showPrintPDF: true,
-        showPageControls: true,
-        showNavigationControls: true,
-        showBookmarkButton: true,
-        showToolbar: true,
-        dockPageControls: true,
-        dockNavigationControls: true,
-        dockBookmarkButton: true,
-     */
-
     /* Options to control save behavior */
     const saveOptions = {
         autoSaveFrequency: 0, // Cada 0s realiza un autosave.
@@ -146,10 +133,11 @@ document.addEventListener("adobe_dc_view_sdk.ready", function() {
         async function(metaData, content, options) {
             /* Add your custom save implementation here...and based on that resolve or reject response in given format */
             const pdfArrayBuffer = content;
-            // fs.writeFile('rotateTest.pdf', arrayBuffer);
-            
+
+            // Guardo y envio los key-values del pdf (editado).
             showPDFKeyValues(pdfArrayBuffer);
 
+            // Guardo en el sv el pdf (editado) en sí.
             sendBlobToServer(pdfArrayBuffer);
 
 
