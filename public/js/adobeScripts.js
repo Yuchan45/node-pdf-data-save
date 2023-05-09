@@ -30,19 +30,19 @@ async function getPDFKeyValues(arrayBuffer) {
 };
 
 
-async function postData(url, results, fetchOptions) {
+async function postData(url, data, fetchOptions) {
     /**
-     * Recibe la url a la que postear, los results (data a enviar al sv) y las opciones.
-     * Hace envio de los results al servidor. Retorna lo que devuelve el servidor, o el error en su defecto.
+     * Recibe la url a la que postear, los data (data a enviar al sv) y las opciones.
+     * Hace envio de los data al servidor. Retorna lo que devuelve el servidor, o el error en su defecto.
      */
-
     let response;
     try {
-      response = await axios.post(url, results, fetchOptions);
+        response = await axios.post(url, data, fetchOptions);
     } catch (error) {
         response.error = 'Error:' + error;
-      //console.error('Error:', error);
+        //console.error('Error:', error);
     }
+    //console.log(response.data)
     return response.data ? response.data : response.error;
 };
 
@@ -68,6 +68,26 @@ async function showPDFKeyValues(pdfArrayBuffer) {
     responseTxt.innerHTML = JSON.stringify(processedResults, null, 2);
 };
 
+async function sendBlobToServer(pdfArrayBuffer) {
+    // Creo un blob.
+    const blobContent = new Blob([pdfArrayBuffer], { type: 'application/octet-stream' });
+
+    // Create a new FormData object
+    const formData = new FormData();
+    formData.append('file', blobContent, 'editedPdf.pdf');
+
+    axios.post('/processDataRotate', formData, {
+    headers: {
+        'Content-Type': 'multipart/form-data'
+    }
+    })
+    .then(response => {
+        console.log(response.data);
+    })
+    .catch(error => {
+        console.error(error);
+    });
+}
 
 
 document.addEventListener("adobe_dc_view_sdk.ready", function() {
@@ -87,13 +107,27 @@ document.addEventListener("adobe_dc_view_sdk.ready", function() {
         }
     },
     {
+        showDownloadPDF: true,
+        showPrintPDF: true,
+        showPageControls: true,
+        showNavigationControls: true,
+        showBookmarkButton: true,
+        showToolbar: true,
+        dockPageControls: true,
+        dockNavigationControls: true,
+        dockBookmarkButton: true,
+    });
+
+    /**
+     * 
         embedMode: "FULL_WINDOW",
         showAnnotationTools: false,
         showDownloadPDF: true,
         showPrintPDF: true,
         enableFormFilling: true,
-        showAnnotationTools: true
-    });
+        showAnnotationTools: true,
+        showToolbar: true,
+     */
 
     /* Options to control save behavior */
     const saveOptions = {
@@ -112,6 +146,8 @@ document.addEventListener("adobe_dc_view_sdk.ready", function() {
             // fs.writeFile('rotateTest.pdf', arrayBuffer);
             
             showPDFKeyValues(pdfArrayBuffer);
+
+            sendBlobToServer(pdfArrayBuffer);
 
 
             // Adobe API success return.
