@@ -9,9 +9,9 @@ const fileStorageEngineConfig = multer.diskStorage({
         cb(null, folder);
     },
     filename: function(req, file, cb) {
-        console.log(file.originalname)
-        let pdfName = '';
-        pdfName = file.fieldname + '-' + Date.now() + path.extname(file.originalname);
+        const filename = (file.originalname).split(".")[0];
+
+        pdfName = filename + '-' + Date.now() + path.extname(file.originalname);
         cb(null, pdfName);
     }
 });

@@ -13,7 +13,7 @@ const mainController = {
     },
 
     processData: async function(req, res) {
-        console.log("Entre");
+        // console.log("Entre");
         pdfName = 'g-28_unlocked.pdf';
         const fields = req.body;
 
@@ -30,12 +30,12 @@ const mainController = {
         // return res.status(200).render('home', { pdfName, data });    
     },
 
-    processDataRotate: async function(req, res) {
-        console.log("PDF Guardado en la carpeta 'outputRotatePdfs'!");
+    savePdfFile: async function(req, res) {
+        console.log("PDF Guardado en la carpeta 'outputEditedPDFS'!");
 
         
 
-        return res.status(200).send("PDF Guardado en la carpeta 'outputRotatePdfs'!");
+        return res.status(200).send("PDF Guardado en la carpeta 'outputEditedPDFS'!");
         // return res.status(200).render('home', { pdfName, data });    
     },
 

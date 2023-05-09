@@ -1,4 +1,5 @@
 const pdfjsLib = window['pdfjs-dist/build/pdf'];
+const pdfTitleTxt = document.getElementById("pdf-title");
 const responseTxt = document.getElementById("response-text");
 
 
@@ -68,18 +69,16 @@ async function showPDFKeyValues(pdfArrayBuffer) {
     responseTxt.innerHTML = JSON.stringify(processedResults, null, 2);
 };
 
-async function sendBlobToServer(pdfArrayBuffer) {
+async function sendBlobToServer(pdfArrayBuffer, pdfName) {
     /**
      * Recibe un array Buffer, se encarga de convertirlo a blob y mandarlo al server.
      */
-    // Creo un blob.
+
     const blobContent = new Blob([pdfArrayBuffer], { type: 'application/octet-stream' });
+    const formData = new FormData();     // Create a new FormData object
+    formData.append('file', blobContent, pdfName);
 
-    // Create a new FormData object
-    const formData = new FormData();
-    formData.append('file', blobContent, 'editedPdf.pdf');
-
-    axios.post('/processDataRotate', formData, {
+    axios.post('/savePdfFile', formData, {
     headers: {
         'Content-Type': 'multipart/form-data'
     }
@@ -96,6 +95,8 @@ async function sendBlobToServer(pdfArrayBuffer) {
 document.addEventListener("adobe_dc_view_sdk.ready", function() {
     //const pdfName = 'pdfPocosDatosTexts.pdf';
     const pdfName = 'dosPaginasSoloTxtsCompleto.pdf';
+
+    pdfTitleTxt.innerHTML = "Current PDF: " + pdfName;
 
     // const miApiKey = 45fc1d368d724aadb79e26afe3fcbd32;
     // const ApiKeyMati = 5da6731fa7134ae481916d27d363d44;
@@ -138,7 +139,7 @@ document.addEventListener("adobe_dc_view_sdk.ready", function() {
             showPDFKeyValues(pdfArrayBuffer);
 
             // Guardo en el sv el pdf (editado) en sí.
-            sendBlobToServer(pdfArrayBuffer);
+            sendBlobToServer(pdfArrayBuffer, pdfName);
 
 
             // Adobe API success return.
