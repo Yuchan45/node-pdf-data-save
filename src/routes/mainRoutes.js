@@ -5,11 +5,11 @@ const mainController = require('../controllers/mainController');
 // Multer
 const multipleUpload = require('../middlewares/pdfsMulter');
 
-const { index, processData, processDataRotate } = mainController;
+const { index, processData, savePdfFile } = mainController;
 
 router.get('/', index);
 router.post('/processData', processData);
-router.post('/processDataRotate', multipleUpload, processDataRotate);
+router.post('/savePdfFile', multipleUpload, savePdfFile);
 
 
 module.exports = router;

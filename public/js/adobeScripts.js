@@ -1,4 +1,5 @@
 const pdfjsLib = window['pdfjs-dist/build/pdf'];
+const pdfTitleTxt = document.getElementById("pdf-title");
 const responseTxt = document.getElementById("response-text");
 
 
@@ -68,15 +69,16 @@ async function showPDFKeyValues(pdfArrayBuffer) {
     responseTxt.innerHTML = JSON.stringify(processedResults, null, 2);
 };
 
-async function sendBlobToServer(pdfArrayBuffer) {
-    // Creo un blob.
+async function sendBlobToServer(pdfArrayBuffer, pdfName) {
+    /**
+     * Recibe un array Buffer, se encarga de convertirlo a blob y mandarlo al server.
+     */
+
     const blobContent = new Blob([pdfArrayBuffer], { type: 'application/octet-stream' });
+    const formData = new FormData();     // Create a new FormData object
+    formData.append('file', blobContent, pdfName);
 
-    // Create a new FormData object
-    const formData = new FormData();
-    formData.append('file', blobContent, 'editedPdf.pdf');
-
-    axios.post('/processDataRotate', formData, {
+    axios.post('/savePdfFile', formData, {
     headers: {
         'Content-Type': 'multipart/form-data'
     }
@@ -92,7 +94,9 @@ async function sendBlobToServer(pdfArrayBuffer) {
 
 document.addEventListener("adobe_dc_view_sdk.ready", function() {
     //const pdfName = 'pdfPocosDatosTexts.pdf';
-    const pdfName = 'unaSolaHojaTodoTexts.pdf';
+    const pdfName = 'dosPaginasSoloTxtsCompleto.pdf';
+
+    pdfTitleTxt.innerHTML = "Current PDF: " + pdfName;
 
     // const miApiKey = 45fc1d368d724aadb79e26afe3fcbd32;
     // const ApiKeyMati = 5da6731fa7134ae481916d27d363d44;
@@ -100,6 +104,7 @@ document.addEventListener("adobe_dc_view_sdk.ready", function() {
     var adobeDCView = new AdobeDC.View({clientId: "45fc1d368d724aadb79e26afe3fcbd32", divId: "adobe-dc-view"});
     // Preview PDF.
     adobeDCView.previewFile({
+        // content: {location: {url: "/outputPdfs/" + pdfName}},
         content: {location: {url: "/outputPdfs/" + pdfName}},
         metaData: {
             fileName: pdfName,
@@ -107,19 +112,6 @@ document.addEventListener("adobe_dc_view_sdk.ready", function() {
         }
     },
     {
-        showDownloadPDF: true,
-        showPrintPDF: true,
-        showPageControls: true,
-        showNavigationControls: true,
-        showBookmarkButton: true,
-        showToolbar: true,
-        dockPageControls: true,
-        dockNavigationControls: true,
-        dockBookmarkButton: true,
-    });
-
-    /**
-     * 
         embedMode: "FULL_WINDOW",
         showAnnotationTools: false,
         showDownloadPDF: true,
@@ -127,7 +119,7 @@ document.addEventListener("adobe_dc_view_sdk.ready", function() {
         enableFormFilling: true,
         showAnnotationTools: true,
         showToolbar: true,
-     */
+    });
 
     /* Options to control save behavior */
     const saveOptions = {
@@ -143,11 +135,12 @@ document.addEventListener("adobe_dc_view_sdk.ready", function() {
         async function(metaData, content, options) {
             /* Add your custom save implementation here...and based on that resolve or reject response in given format */
             const pdfArrayBuffer = content;
-            // fs.writeFile('rotateTest.pdf', arrayBuffer);
-            
+
+            // Guardo y envio los key-values del pdf (editado).
             showPDFKeyValues(pdfArrayBuffer);
 
-            sendBlobToServer(pdfArrayBuffer);
+            // Guardo en el sv el pdf (editado) en sí.
+            sendBlobToServer(pdfArrayBuffer, pdfName);
 
 
             // Adobe API success return.
