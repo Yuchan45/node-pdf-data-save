@@ -24,6 +24,15 @@ app.use(express.json());
 // parse application/octet-stream
 app.use(bodyParser.raw({ type: 'application/octet-stream' }));
 
+// Enable CORS
+// app.use(function(req, res, next) {
+//     res.header("Access-Control-Allow-Origin", "*");
+//     res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
+//     res.header("Access-Control-Allow-Headers", "Content-Type");
+//     next();
+// });
+
+
 // SET TEMPLATE ENGINE (EJS)
 app.set('view engine', 'ejs');
 

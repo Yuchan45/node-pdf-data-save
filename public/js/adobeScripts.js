@@ -104,6 +104,7 @@ document.addEventListener("adobe_dc_view_sdk.ready", function() {
     var adobeDCView = new AdobeDC.View({clientId: "45fc1d368d724aadb79e26afe3fcbd32", divId: "adobe-dc-view"});
     // Preview PDF.
     adobeDCView.previewFile({
+        // content: {location: {url: "/outputPdfs/" + pdfName}},
         content: {location: {url: "/outputPdfs/" + pdfName}},
         metaData: {
             fileName: pdfName,
